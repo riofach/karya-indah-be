@@ -1,0 +1,841 @@
+{
+	"info": {
+		"_postman_id": "9e8a2c5d-7e5f-4d3f-9d3e-3f3a3f5d5f3a",
+		"name": "Karya Indah API",
+		"description": "API Collection untuk aplikasi Karya Indah Paint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"customer@example.com\",\n    \"password\": \"password123\",\n    \"displayName\": \"Customer Name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Registrasi customer baru"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"customer@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Login user (catatan: pada backend hanya ada informasi bahwa login dilakukan di client-side)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "me"]
+						},
+						"description": "Mendapatkan data user dari token"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User (SuperAdmin only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"password123\",\n    \"displayName\": \"Admin Name\",\n    \"role\": \"admin\",\n    \"branchId\": \"{{branch_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/users",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "users"]
+						},
+						"description": "Membuat user baru (admin, head, owner, super) oleh superadmin"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint untuk autentikasi dan manajemen user awal"
+		},
+		{
+			"name": "Branches",
+			"item": [
+				{
+					"name": "Get All Branches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/branches",
+							"host": ["{{base_url}}"],
+							"path": ["api", "branches"]
+						},
+						"description": "Mendapatkan semua branch"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Branch by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/branches/{{branch_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "branches", "{{branch_id}}"]
+						},
+						"description": "Mendapatkan branch berdasarkan ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Branch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Branch Name\",\n    \"address\": \"Branch Address\",\n    \"location\": {\n        \"latitude\": -6.2088,\n        \"longitude\": 106.8456\n    },\n    \"contactNumber\": \"08123456789\",\n    \"whatsappAdmin\": \"08123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/branches",
+							"host": ["{{base_url}}"],
+							"path": ["api", "branches"]
+						},
+						"description": "Membuat branch baru (owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Branch",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Branch Name\",\n    \"address\": \"Updated Branch Address\",\n    \"location\": {\n        \"latitude\": -6.2088,\n        \"longitude\": 106.8456\n    },\n    \"contactNumber\": \"08123456789\",\n    \"whatsappAdmin\": \"08123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/branches/{{branch_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "branches", "{{branch_id}}"]
+						},
+						"description": "Mengupdate branch (owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Branch",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/branches/{{branch_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "branches", "{{branch_id}}"]
+						},
+						"description": "Menghapus branch (super)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint untuk manajemen cabang"
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products by Branch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/branch/{{branch_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "branch", "{{branch_id}}"]
+						},
+						"description": "Mendapatkan semua produk di branch tertentu"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/branch/{{branch_id}}/{{product_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "branch", "{{branch_id}}", "{{product_id}}"]
+						},
+						"description": "Mendapatkan produk berdasarkan ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "branchId",
+									"value": "{{branch_id}}",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Product Name",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Product Description",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "100000",
+									"type": "text"
+								},
+								{
+									"key": "weight",
+									"value": "1000",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "minStock",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"]
+						},
+						"description": "Membuat produk baru (head, owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Updated Product Name",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Updated Product Description",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "120000",
+									"type": "text"
+								},
+								{
+									"key": "weight",
+									"value": "1200",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "120",
+									"type": "text"
+								},
+								{
+									"key": "minStock",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products/branch/{{branch_id}}/{{product_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "branch", "{{branch_id}}", "{{product_id}}"]
+						},
+						"description": "Mengupdate produk (head, owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/products/branch/{{branch_id}}/{{product_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "branch", "{{branch_id}}", "{{product_id}}"]
+						},
+						"description": "Menghapus produk (head, owner, super)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint untuk manajemen produk"
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Get Orders by Branch",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders/branch/{{branch_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders", "branch", "{{branch_id}}"]
+						},
+						"description": "Mendapatkan semua order di branch tertentu (admin, head, owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders/branch/{{branch_id}}/{{order_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders", "branch", "{{branch_id}}", "{{order_id}}"]
+						},
+						"description": "Mendapatkan order berdasarkan ID (admin, head, owner, super, customer)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Orders (Customer)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders/my-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders", "my-orders"]
+						},
+						"description": "Mendapatkan order berdasarkan customer (customer)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"branchId\": \"{{branch_id}}\",\n    \"items\": [\n        {\n            \"productId\": \"{{product_id}}\",\n            \"quantity\": 2,\n            \"priceAtOrder\": 100000\n        }\n    ],\n    \"subtotal\": 200000,\n    \"shippingCost\": 15000,\n    \"total\": 215000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders"]
+						},
+						"description": "Membuat order baru (customer)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"paid\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/orders/branch/{{branch_id}}/{{order_id}}/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders", "branch", "{{branch_id}}", "{{order_id}}", "status"]
+						},
+						"description": "Mengupdate status order (admin, head, owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Reports",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders/reports?branchId={{branch_id}}&startDate=2023-01-01&endDate=2023-12-31",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders", "reports"],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "{{branch_id}}"
+								},
+								{
+									"key": "startDate",
+									"value": "2023-01-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2023-12-31"
+								}
+							]
+						},
+						"description": "Mendapatkan laporan order (owner, super)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint untuk manajemen order"
+		},
+		{
+			"name": "Stock Requests",
+			"item": [
+				{
+					"name": "Get Stock Requests by Branch",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/stock-requests/branch/{{branch_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "stock-requests", "branch", "{{branch_id}}"]
+						},
+						"description": "Mendapatkan semua stock request di branch tertentu (admin, head, owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stock Request by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/stock-requests/branch/{{branch_id}}/{{request_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "stock-requests", "branch", "{{branch_id}}", "{{request_id}}"]
+						},
+						"description": "Mendapatkan stock request berdasarkan ID (admin, head, owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Stock Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"branchId\": \"{{branch_id}}\",\n    \"productId\": \"{{product_id}}\",\n    \"quantity\": 50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock-requests",
+							"host": ["{{base_url}}"],
+							"path": ["api", "stock-requests"]
+						},
+						"description": "Membuat stock request baru (admin)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Stock Request Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"approved\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock-requests/branch/{{branch_id}}/{{request_id}}/status",
+							"host": ["{{base_url}}"],
+							"path": [
+								"api",
+								"stock-requests",
+								"branch",
+								"{{branch_id}}",
+								"{{request_id}}",
+								"status"
+							]
+						},
+						"description": "Mengupdate status stock request (head, owner, super)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pending Stock Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/stock-requests/pending",
+							"host": ["{{base_url}}"],
+							"path": ["api", "stock-requests", "pending"]
+						},
+						"description": "Mendapatkan stock request yang membutuhkan persetujuan (head, owner, super)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint untuk manajemen permintaan stok"
+		},
+		{
+			"name": "Uploads",
+			"item": [
+				{
+					"name": "Upload Product Images",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": [],
+									"description": "Maksimum 3 gambar"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/uploads/product/{{branch_id}}/{{product_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "uploads", "product", "{{branch_id}}", "{{product_id}}"]
+						},
+						"description": "Upload gambar produk (maksimal 3). Akses: head, owner, super"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Images",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/uploads/product/{{branch_id}}/{{product_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "uploads", "product", "{{branch_id}}", "{{product_id}}"]
+						},
+						"description": "Mendapatkan semua gambar produk. Akses: publik"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product Images",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/uploads/product/{{branch_id}}/{{product_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "uploads", "product", "{{branch_id}}", "{{product_id}}"]
+						},
+						"description": "Menghapus gambar produk. Akses: head, owner, super"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Payment Proof",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/uploads/payment/{{branch_id}}/{{order_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "uploads", "payment", "{{branch_id}}", "{{order_id}}"]
+						},
+						"description": "Upload bukti pembayaran untuk pesanan. Akses: customer"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoint untuk upload gambar produk dan bukti pembayaran"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "your_auth_token_here",
+			"type": "string"
+		},
+		{
+			"key": "branch_id",
+			"value": "your_branch_id_here",
+			"type": "string"
+		},
+		{
+			"key": "product_id",
+			"value": "your_product_id_here",
+			"type": "string"
+		},
+		{
+			"key": "order_id",
+			"value": "your_order_id_here",
+			"type": "string"
+		},
+		{
+			"key": "request_id",
+			"value": "your_request_id_here",
+			"type": "string"
+		}
+	]
+}
